@@ -3,6 +3,7 @@
 #include <point.h>
 #include <square.h>
 #include <circle.h>
+#include <plus.h>
 
 
 
@@ -25,6 +26,8 @@ void task10();
 void task11();
 void task12();
 
+void task23();
+void task24();
 
 
 
@@ -42,6 +45,10 @@ int main(int argc, char *argv[])
     task10();
     task11();
     task12();
+    
+    
+    task23();
+    task24();
 
     return 0;
 }
@@ -286,3 +293,50 @@ void task12()
     });
     drawSquare.start();
 }
+
+
+void task23(){
+    DrawWindow drawPlus(600, 600);
+    QPainter *painter = drawPlus.getPainter();
+    double length = 100;
+    double thickness = 50;
+    Plus plus(thickness, length, 0, 0);
+
+    drawPlus.setInterval(15, [&](){
+        painter->fillRect(0, 0, 600, 600, QBrush(Qt::yellow));
+        plus.draw(painter, Qt::black);
+        plus.move(5, 1);
+        if(plus.getLeft() > 600){
+            plus.move(-600-length, 0);
+        }
+        else if(plus.getRight() < 0){
+            plus.move(600+length, 0);
+        }
+        else if(plus.getTop() > 600){
+            plus.move(0, -600-length);
+        }
+        else if(plus.getBottom() < 0){
+            plus.move(0, 600+length);
+        }
+        drawPlus.commitPainterChanges();
+    });
+    drawPlus.start();
+}
+
+
+void task24(){
+    DrawWindow dW(600, 600);
+    QPainter *painter = dW.getPainter();
+    Point *point = new Point(300, 200);
+    Plus plus(100, 300, 300, 300);
+    painter->fillRect(0, 0, 600, 600, QBrush(Qt::yellow));
+    if(plus.contains(point) ){
+            plus.draw(painter, Qt::red);
+
+    }
+    dW.commitPainterChanges();
+    dW.start();
+}
+
+
+
